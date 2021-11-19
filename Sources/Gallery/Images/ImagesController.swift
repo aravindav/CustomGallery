@@ -117,7 +117,9 @@ class ImagesController: UIViewController {
 
   func refreshView() {
     let hasImages = !cart.images.isEmpty
-    gridView.bottomView.g_fade(visible: hasImages)
+   // gridView.bottomView.g_fade(visible: hasImages)
+  //  gridView.doneButton.g_fade(visible: hasImages)
+      gridView.doneButton.isHidden = !hasImages
     gridView.collectionView.g_updateBottomInset(hasImages ? gridView.bottomView.frame.size.height : 0)
   }
 
@@ -133,7 +135,7 @@ class ImagesController: UIViewController {
   func makeGridView() -> GridView {
     let view = GridView()
     view.bottomView.alpha = 0
-    
+
     return view
   }
 
@@ -231,6 +233,13 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
     if cart.images.contains(item) {
       cart.remove(item)
     } else {
+        // In single image selection mode, remove selected image when
+        // another image is clicked
+        if  cart.images.count == Config.Camera.imageLimit
+        {
+            cart.remove(cart.images[0])
+        }
+
       if Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > cart.images.count{
         cart.add(item)
       }
@@ -252,7 +261,12 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
 
     if let index = cart.images.firstIndex(of: item) {
       cell.frameView.g_quickFade()
-      cell.frameView.label.text = "\(index + 1)"
+        if Config.Grid.FrameView.showImageCountLabel {
+            cell.frameView.label.text = "\(index + 1)"
+        }
+        else{
+            cell.frameView.label.text =  Config.Grid.FrameView.selectedImageOverlayText
+        }
     } else {
       cell.frameView.alpha = 0
     }

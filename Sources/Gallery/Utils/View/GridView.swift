@@ -22,6 +22,7 @@ class GridView: UIView {
 
     setup()
     loadingIndicator.startAnimating()
+    doneButton.isHidden = true
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -31,17 +32,17 @@ class GridView: UIView {
   // MARK: - Setup
 
   private func setup() {
-    [collectionView, bottomView, topView, emptyView, loadingIndicator].forEach {
+    [collectionView, topView,emptyView, loadingIndicator].forEach {
       addSubview($0)
     }
 
-    [closeButton, arrowButton].forEach {
+    [closeButton, arrowButton,doneButton].forEach {
       topView.addSubview($0)
     }
 
-    [bottomBlurView, doneButton].forEach {
-        bottomView.addSubview($0)
-    }
+//    [bottomBlurView].forEach {
+//        bottomView.addSubview($0)
+//    }
 
     var safeAreaInsetTop: CGFloat = 0
     if #available(iOS 11, *) {
@@ -76,8 +77,21 @@ class GridView: UIView {
     arrowButton.g_pin(on: .top, constant: safeAreaInsetTop)
     arrowButton.g_pin(height: 40)
 
-    doneButton.g_pin(on: .centerY)
-    doneButton.g_pin(on: .right, constant: -38)
+//    doneButton.g_pin(on: .centerY)
+//    doneButton.g_pin(on: .right, constant: -38)
+      
+   
+//      doneButton.g_pin(on: .centerX, constant: safeAreaInsetTop)
+//      doneButton.g_pin(on: .top, constant: safeAreaInsetTop)
+//      doneButton.g_pin(size: CGSize(width: 100, height: 40))
+//
+      doneButton.g_pin(on: .top, constant: safeAreaInsetTop)
+      doneButton.g_pin(on: .right)
+      doneButton.g_pin(size: CGSize(width: 80, height: 40))
+
+      print("doneButton frame \(doneButton.frame)")
+      print("closeButton frame \(closeButton.frame)")
+
   }
 
   // MARK: - Controls
@@ -123,13 +137,19 @@ class GridView: UIView {
   }
 
   private func makeDoneButton() -> UIButton {
-    let button = UIButton(type: .system)
-    button.setTitleColor(UIColor.white, for: UIControl.State())
-    button.setTitleColor(UIColor.lightGray, for: .disabled)
-    button.titleLabel?.font = Config.Font.Text.regular.withSize(16)
-    button.setTitle("Gallery.Done".g_localize(fallback: "Done"), for: UIControl.State())
-    
-    return button
+//    let button = UIButton(type: .system)
+//    button.setTitleColor(UIColor.white, for: UIControl.State())
+//    button.setTitleColor(UIColor.lightGray, for: .disabled)
+//    button.titleLabel?.font = Config.Font.Text.regular.withSize(16)
+//    button.setTitle("Gallery.Done".g_localize(fallback: "Done"), for: UIControl.State())
+
+      let button = UIButton(type: .custom)
+      button.setTitle("Done", for: .normal)
+      button.setTitleColor(UIColor.darkGray, for: .normal)
+      //button.tintColor = Config.Grid.CloseButton.tintColor
+
+      return button
+
   }
 
   private func makeCollectionView() -> UICollectionView {
