@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name             = "Gallery"
+  s.name             = "CustomGallery"
   s.summary          = "Something good about gallery"
   s.version          = "2.4.0"
   s.homepage         = "https://github.com/hyperoslo/Gallery"
